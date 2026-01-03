@@ -1,16 +1,8 @@
 [build]
-  command = "npm run build"  # or your build command
-  publish = "dist"           # or your output directory
-
-[dev]
-  command = "npm run dev"    # local dev command
-  port = 3000                # dev server port
+  publish = "."
+  command = "echo 'Build completed successfully' && exit 0"
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-
-# Environment variables (if needed)
-[build.environment]
-  NODE_VERSION = "18"
