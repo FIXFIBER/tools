@@ -1,169 +1,209 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    padding: 20px;
-    color: #333;
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  touch-action: none; /* Prevents scrolling on mobile */
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 20px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    overflow: hidden;
+#wrapper {
+  overflow: hidden;
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  background: radial-gradient(circle at center, rgb(45, 45, 45), rgb(20, 20, 20));
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-header {
-    background: linear-gradient(90deg, #4f46e5, #7c3aed);
-    color: white;
-    padding: 2rem;
-    text-align: center;
+/* === SVG === */
+svg {
+  display: block;
+  width: 100%;
+  height: 100vh;
+  max-width: 100%;
+  max-height: 100%;
 }
 
-header h1 {
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
+text {
+  font-family: "Courier New", Courier, monospace; /* Hacker font */
 }
 
-header .subtitle {
-    font-size: 1.2rem;
-    opacity: 0.9;
+svg #startText,
+svg #restartText {
+  fill: #ffffff;
+  pointer-events: none;
 }
 
-.status-card {
-    background: white;
-    margin: 2rem;
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    border-left: 5px solid #10b981;
+svg #ball {
+  pointer-events: none;
 }
 
-.status-icon {
-    font-size: 4rem;
-    color: #10b981;
-    margin-bottom: 1rem;
+svg #text,
+svg #com {
+  fill:transparent;
 }
 
-.live {
-    background: #10b981;
-    color: white;
-    padding: 0.2rem 1rem;
-    border-radius: 20px;
-    font-size: 0.9rem;
+svg #paths  {
+  fill:none;
+  stroke: rgb(80, 80, 80);
+  stroke-width: 2px;
+  stroke-linejoin:round;
+  stroke-dasharray:10;
+  stroke:gray;
+  opacity: 0;  
 }
 
-.details {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    margin-top: 1.5rem;
-    flex-wrap: wrap;
+svg #startClick {
+  opacity: 0;
+  cursor: pointer;
 }
 
-.details p {
-    background: #f3f4f6;
-    padding: 0.8rem 1.5rem;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+svg #startClick:hover + #startText,
+svg #restartClick:hover + #restartText {
+  stroke: rgba(255,65,65,0.3);
+  stroke-width: 4px;
 }
 
-.info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin: 2rem;
+svg #restartClick {
+  cursor: pointer;
+  fill:transparent;
 }
 
-.info-box {
-    background: white;
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-    text-align: center;
-    transition: transform 0.3s;
+svg #restartText {
+  opacity:0;
 }
 
-.info-box:hover {
-    transform: translateY(-5px);
+/* Force Landscape on Mobile Portrait */
+@media screen and (orientation: portrait) {
+  #wrapper {
+    width: 100vh;
+    height: 100vw;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
 }
 
-.info-box i {
-    font-size: 3rem;
-    margin-bottom: 1rem;
+/* === Glitch Overlay === */
+#glitchOverlay {
+  position: absolute;
+  bottom: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Source Sans Pro', sans-serif;
+  background: transparent;
+  z-index: 10;
+  opacity: 0; /* Hidden initially */
+  pointer-events: none; /* Allow clicks through when hidden */
 }
 
-.info-box:nth-child(1) i { color: #333; }
-.info-box:nth-child(2) i { color: #000; }
-.info-box:nth-child(3) i { color: #f59e0b; }
-
-.btn {
-    display: inline-block;
-    background: #4f46e5;
-    color: white;
-    padding: 0.8rem 1.5rem;
-    border-radius: 8px;
-    text-decoration: none;
-    margin-top: 1rem;
-    border: none;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background 0.3s;
+.wrap {
+  display: flex;
+  width: auto;
+  height: auto;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
 }
 
-.btn:hover {
-    background: #4338ca;
+.wrap.flat-color-bg {
+  background-color: black;
 }
 
-.deployment-log {
-    margin: 2rem;
-    background: white;
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+.wrap.flat-color-bg .glitch::before,
+.wrap.flat-color-bg .glitch::after {
+  background-color: black;
 }
 
-#log-content {
-    background: #f8fafc;
-    padding: 1.5rem;
-    border-radius: 10px;
-    margin-top: 1rem;
-    font-family: 'Courier New', monospace;
-    line-height: 1.8;
+/* Link and button reset for overlay */
+#glitchOverlay a,
+#glitchOverlay button {
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+  color: #fff;
+  background-color: transparent;
+  font-size: 30px;
+  font-weight: 700;
+  text-decoration: underline;
+  text-transform: uppercase;
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
-footer {
-    text-align: center;
-    padding: 2rem;
-    background: #f8fafc;
-    color: #64748b;
-    border-top: 1px solid #e2e8f0;
+/* Glitch style */
+.glitch {
+  position: relative;
+  padding: 0px 3px;
+  outline: 0px;
+  overflow: hidden;
+  cursor: pointer;
+  z-index: 0;
 }
 
-.timestamp {
-    font-size: 0.9rem;
-    margin-top: 0.5rem;
-    color: #94a3b8;
+.glitch::before,
+.glitch::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: attr(data-text);
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  overflow: hidden;
+  animation-duration: 1000ms;
+  animation-delay: 0ms;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: reverse-alternate;
+  z-index: 1;
 }
 
-@media (max-width: 768px) {
-    .info-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .details {
-        flex-direction: column;
-        align-items: center;
-    }
+.glitch::before {
+  padding-right: 2px;
+  text-shadow: -2px 0 red;
+  animation-name: glitch-animation-red;
+}
+
+.glitch::after {
+  padding-left: 2px;
+  text-shadow: -2px 0 blue;
+  animation-name: glitch-animation-blue;
+}
+
+.glitch:hover::before {
+  animation-name: glitch-animation-red;
+}
+.glitch:hover::after {
+  animation-name: glitch-animation-blue;
+}
+
+/* Generated Keyframes for Glitch Effect */
+@keyframes glitch-animation-blue {
+  0% { opacity: 1; clip-path: inset(10% 0% 80% 0%); }
+  20% { opacity: 1; clip-path: inset(80% 0% 10% 0%); }
+  40% { opacity: 1; clip-path: inset(40% 0% 50% 0%); }
+  60% { opacity: 1; clip-path: inset(20% 0% 10% 0%); }
+  80% { opacity: 1; clip-path: inset(60% 0% 30% 0%); }
+  100% { opacity: 1; clip-path: inset(10% 0% 70% 0%); }
+}
+
+@keyframes glitch-animation-red {
+  0% { opacity: 1; clip-path: inset(30% 0% 10% 0%); }
+  20% { opacity: 1; clip-path: inset(10% 0% 60% 0%); }
+  40% { opacity: 1; clip-path: inset(70% 0% 20% 0%); }
+  60% { opacity: 1; clip-path: inset(20% 0% 40% 0%); }
+  80% { opacity: 1; clip-path: inset(50% 0% 10% 0%); }
+  100% { opacity: 1; clip-path: inset(10% 0% 80% 0%); }
 }
